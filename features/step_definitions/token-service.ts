@@ -172,7 +172,7 @@ Then(/^An attempt to mint tokens fails$/, async function () {
     //Get the Transaction ID
     const txTokenMintId = txTokenMintResponse.transactionId.toString();
 
-  } catch (error) {
+  } catch {
     console.log("\x1b[33m Mint fixed supply tokens : \x1b[0m");
     console.log(" \x1b[1m Receipt status             : \x1b[0m","\x1b[31m FAILS \x1b[0m");
 }
