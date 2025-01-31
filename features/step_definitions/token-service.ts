@@ -88,12 +88,6 @@ Then(/^The token is owned by the account$/, async function () {
   console.log("\x1b[1m Token is owned by the account: \x1b[0m", tokenInfoQueryResponse.treasuryAccountId?.toString());
 });
 Then(/^An attempt to mint (\d+) additional tokens succeeds$/, async function (MintAmount:number) {
-
-  const account = accounts[0]
-  const MY_ACCOUNT_ID = AccountId.fromString(account.id);
-  const MY_PRIVATE_KEY = PrivateKey.fromStringED25519(account.privateKey);
-  client.setOperator(MY_ACCOUNT_ID, MY_PRIVATE_KEY);
-
   const txTokenMint = await new TokenMintTransaction()
       .setTokenId(StorTokenId) //Fill in the token ID
       .setAmount(MintAmount)
@@ -163,11 +157,6 @@ Then(/^The total supply of the token is (\d+)$/, async function (TokenAmount:num
 });
 Then(/^An attempt to mint tokens fails$/, async function () {
   try {
-  const account = accounts[0]
-  const MY_ACCOUNT_ID = AccountId.fromString(account.id);
-  const MY_PRIVATE_KEY = PrivateKey.fromStringED25519(account.privateKey);
-  client.setOperator(MY_ACCOUNT_ID, MY_PRIVATE_KEY);
-
   const txTokenMint = await new TokenMintTransaction()
       .setTokenId(StorTokenId) //Fill in the token ID
       .freezeWith(client);
