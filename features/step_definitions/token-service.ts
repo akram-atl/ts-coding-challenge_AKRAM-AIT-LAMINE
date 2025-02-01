@@ -518,7 +518,7 @@ const txTokenAssociateId1 = txTokenAssociateResponse1.transactionId.toString();
   const account2Balance :any = await new AccountBalanceQuery().setAccountId(MY_ACCOUNT_2_ID).execute(client);   
   const tokenInfoQuery = new TokenInfoQuery().setTokenId(StorTokenId);
   const tokenInfoQueryResponse = await tokenInfoQuery.execute(client);
-  console.log("\x1b[36m A Second hedera account with \x1b[0m", `${account2Balance.tokens?.get(StorTokenId).toString()} `,`${tokenInfoQueryResponse.symbol.toString()} \x1b[36m tokens \x1b[0m `);
+  console.log("\x1b[36m A Second hedera account with \x1b[0m",account2Balance.hbars?.toBigNumber().toString()," \x1b[36m ℏ  and \x1b[0m ", `${account2Balance.tokens?.get(StorTokenId).toString()} `,`${tokenInfoQueryResponse.symbol.toString()} \x1b[36m tokens \x1b[0m `);
 
 
 });
@@ -565,7 +565,7 @@ const txTokenAssociateId1 = txTokenAssociateResponse1.transactionId.toString();
   const account3Balance :any = await new AccountBalanceQuery().setAccountId(MY_ACCOUNT_3_ID).execute(client);   
   const tokenInfoQuery = new TokenInfoQuery().setTokenId(StorTokenId);
   const tokenInfoQueryResponse = await tokenInfoQuery.execute(client);
-  console.log("\x1b[36m A Third hedera account with \x1b[0m", `${account3Balance.tokens?.get(StorTokenId).toString()} `,`${tokenInfoQueryResponse.symbol.toString()} \x1b[36m tokens \x1b[0m `);
+  console.log("\x1b[36m A Third hedera account with \x1b[0m",account3Balance.hbars?.toBigNumber().toString()," \x1b[36m ℏ  and \x1b[0m ", `${account3Balance.tokens?.get(StorTokenId).toString()} `,`${tokenInfoQueryResponse.symbol.toString()} \x1b[36m tokens \x1b[0m `);
 
 
 });
@@ -612,7 +612,7 @@ const txTokenAssociateId1 = txTokenAssociateResponse1.transactionId.toString();
   const account4Balance :any = await new AccountBalanceQuery().setAccountId(MY_ACCOUNT_4_ID).execute(client);   
   const tokenInfoQuery = new TokenInfoQuery().setTokenId(StorTokenId);
   const tokenInfoQueryResponse = await tokenInfoQuery.execute(client);
-  console.log("\x1b[36m A Fourth hedera account with \x1b[0m", `${account4Balance.tokens?.get(StorTokenId).toString()} `,`${tokenInfoQueryResponse.symbol.toString()} \x1b[36m tokens \x1b[0m `);
+  console.log("\x1b[36m A Fourth hedera account with \x1b[0m",account4Balance.hbars?.toBigNumber().toString()," \x1b[36m ℏ  and \x1b[0m ", `${account4Balance.tokens?.get(StorTokenId).toString()} `,`${tokenInfoQueryResponse.symbol.toString()} \x1b[36m tokens \x1b[0m `);
 
 
 
