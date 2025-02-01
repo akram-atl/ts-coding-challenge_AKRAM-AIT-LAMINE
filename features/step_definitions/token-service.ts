@@ -631,7 +631,7 @@ When(/^A transaction is created to transfer (\d+) HTT tokens out of the first an
   const acc_4 = accounts[4]
   const MY_ACCOUNT_4_ID = AccountId.fromString(acc_4.id);
 
-  // Create the token airdrop transaction for fungible token
+  // Create the token multi party token transaction
   const txTransfer = await new TransferTransaction()
     .addTokenTransfer(StorTokenId, MY_ACCOUNT_1_ID, -10)
     .addTokenTransfer(StorTokenId, MY_ACCOUNT_3_ID, 5)
