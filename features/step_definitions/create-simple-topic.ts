@@ -31,8 +31,6 @@ Given(/^a first account with more than (\d+) hbars$/, async function (expectedBa
   const query = new AccountBalanceQuery().setAccountId(account);
   const balance = await query.execute(client)
   assert.ok(balance.hbars.toBigNumber().toNumber() > expectedBalance,)
-  console.log("\x1b[33m Balance of the first acount :\x1b[0m")
-  console.log(`${balance.hbars.toBigNumber().toNumber()} \x1b[33m ℏ \x1b[0m`);
 });
 
 When(/^A topic is created with the memo "([^"]*)" with the first account as the submit key$/, async function (memo: string) {
@@ -57,27 +55,33 @@ When(/^A topic is created with the memo "([^"]*)" with the first account as the 
   //store Topicid
   StoreTopicid = newTopicId ;
 
-  console.log("\x1b[33m Topic is created with the memo :\x1b[0m");
-  console.log( "\x1b[1m Topic Memo            : \x1b[0m",memo);
 });
 
 When(/^The message "([^"]*)" is published to the topic$/, async function (message: string) {
+  const acc = accounts[0]
+  const account: AccountId = AccountId.fromString(acc.id);
+  this.account = account
+  const privKey: PrivateKey = PrivateKey.fromStringED25519(acc.privateKey);
+  this.privKey = privKey
+  client.setOperator(this.account, privKey);
+
   const txTopicMessageSubmit = await new TopicMessageSubmitTransaction()
   .setTopicId(StoreTopicid) 
-  .setMessage("Ride from A to B ");
-  //store TxTopicMessageSubmit
+  .setMessage(message)
+  .freezeWith(client);
+  const signTxTokenCreate = await txTopicMessageSubmit.sign(privKey);
+  const txTokenCreateResponse = await signTxTokenCreate.execute(client); 
+
   StoreTxTopicMessageSubmit=txTopicMessageSubmit;
 
 });
 
 Then(/^The message "([^"]*)" is received by the topic and can be printed to the console$/, async function (message: string) {
+    const receivedMessage = StoreTxTopicMessageSubmit.getMessage().toString();
+    assert.strictEqual(receivedMessage, message, "The received message does not match the expected message.");
+  });
 
-  //Get the transaction message
-    const getTopicMessage = StoreTxTopicMessageSubmit.getMessage();
-    console.log("\x1b[33m The message is received by the topic :\x1b[0m");
-    console.log("\x1b[1m Topic Message            : \x1b[0m" , getTopicMessage.toString());
-    console.log("                                                                        ");
-});
+
 
 Given(/^A second account with more than (\d+) hbars$/, async function (expectedBalance: number) {
     const acc = accounts[1]; 
@@ -91,8 +95,6 @@ Given(/^A second account with more than (\d+) hbars$/, async function (expectedB
     const query = new AccountBalanceQuery().setAccountId(account);
     const balance = await query.execute(client);
     assert.ok(balance.hbars.toBigNumber().toNumber() > expectedBalance,);
-    console.log("\x1b[33m Balance of the second acount :\x1b[0m")
-    console.log(`${balance.hbars.toBigNumber().toNumber()} \x1b[33mℏ\x1b[0m`);
 });
   
 Given(/^A (\d+) of (\d+) threshold key with the first and second account$/, async function (thresholdValue: number, totalKeys: number) {
@@ -111,8 +113,7 @@ Given(/^A (\d+) of (\d+) threshold key with the first and second account$/, asyn
 
   const thresholdKey = new KeyList(publicKeyList, thresholdValue);
 
-  console.log(`\x1b[33m The Threshold key created with a threshold of \x1b[0m ${thresholdValue} \x1b[33m out of \x1b[0m ${totalKeys}:`);
-  
+  assert.strictEqual(publicKeyList.length, totalKeys);
 });
 
 When(/^A topic is created with the memo "([^"]*)" with the threshold key as the submit key$/, async function (memo: string) {
@@ -146,7 +147,5 @@ When(/^A topic is created with the memo "([^"]*)" with the threshold key as the 
   const newTopicId = receipt.topicId;
   //store Topicid
    StoreTopicid = newTopicId ;
-  
-   console.log("\x1b[33m Topic is created with the memo :\x1b[0m");
-   console.log( "\x1b[1m Topic Memo            : \x1b[0m",memo);
+
 });
