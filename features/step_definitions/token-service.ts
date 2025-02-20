@@ -183,6 +183,16 @@ Given(/^The first account holds (\d+) HTT tokens$/, { timeout: 10000 }, async fu
   if (account2Balance.tokens?.get(StorTokenId) == null) {
     await Transfer_Transaction(account_Id(0), private_Key(0), account_Id(1), TokenAmount);
   }
+  else{
+ 
+    const account1Balance: any = await new AccountBalanceQuery().setAccountId(account_Id(1)).execute(client);
+    let Acc1Bal
+    if(account1Balance.tokens?.get(StorTokenId)==null){  Acc1Bal = 0}
+    else{Acc1Bal=account1Balance.tokens?.get(StorTokenId).toNumber();}
+    assert.strictEqual(Acc1Bal, TokenAmount);
+  }
+
+  
 });
 
 Given(/^The second account holds (\d+) HTT tokens$/, { timeout: 10000 }, async function (TokenAmount: number) {
@@ -195,6 +205,19 @@ Given(/^The second account holds (\d+) HTT tokens$/, { timeout: 10000 }, async f
   if (account1Balance.tokens?.get(StorTokenId) == null) {
     await Transfer_Transaction(account_Id(0), private_Key(0), account_Id(2), TokenAmount);
   }
+  
+  else{
+    const account2Balance: any = await new AccountBalanceQuery().setAccountId(account_Id(2)).execute(client);
+    let Acc2Bal
+    if(account2Balance.tokens?.get(StorTokenId)==null){
+      Acc2Bal = 0
+    }
+     else{
+      Acc2Bal=account2Balance.tokens?.get(StorTokenId).toNumber();
+     }
+    assert.strictEqual(Acc2Bal, TokenAmount);
+  }
+  
   
 });
 
