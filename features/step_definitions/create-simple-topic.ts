@@ -67,23 +67,20 @@ When(
 Then(
   /^The message "([^"]*)" is received by the topic and can be printed to the console$/,
   async function (message: string) {
-    const startTime = Date.now() - 1000; 
+    await new Promise((resolve) => setTimeout(resolve, 4000));
 
-    new TopicMessageQuery()
-      .setTopicId(this.newTopicId)
-      .setStartTime(new Date(startTime)) 
-      .subscribe(
-        client,
-        (topicMessage) => {
-          const receivedMessage = topicMessage?.contents.toString();
-          assert.strictEqual(
-            receivedMessage,
-            message,
-            "The received message does not match the expected message."
-          );
-        },
-        (error) => console.log(`Error: ${error.toString()}`)
-      );
+    new TopicMessageQuery().setTopicId(this.newTopicId).subscribe(
+      client,
+      (topicMessage) => {
+        const receivedMessage = topicMessage?.contents.toString();
+        assert.strictEqual(
+          receivedMessage,
+          message,
+          "The received message does not match the expected message."
+        );
+      },
+      (error) => console.log(`Error: ${error.toString()}`)
+    );
   }
 );
 
